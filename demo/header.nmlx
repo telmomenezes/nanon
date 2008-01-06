@@ -1,5 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html>
-<head>
-<title><nanonv var="title" /></title>
-</head>
-<body bgcolor="#FF0000">
+  
+  <head>
+    <title>
+        Nanon - <nanonv var="title" />
+    </title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+  </head>
+  
+  <body>
+  <div id="frame">
+    <div id="header">
+      <h1>nanon</h1>
+      <h2>The spiffy and simple site manager</h2>
+    </div>
+    <div id="leftbar">
+        <a href="index.html">Welcome</a>
+        <a href="index.html">Download</a>
+        <a href="index.html">Install</a>
+        <a href="index.html">How to use</a>
+        <a href="index.html">Author</a>
+        <a href="index.html">Licence</a>
+	</div>
+
+    <div id="centerbar">

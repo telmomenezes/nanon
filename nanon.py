@@ -2,7 +2,7 @@
 
 # nanon
 # Copyright (C) 2008 Telmo Menezes.
-# telmo@telmomenezes.com
+# telmo (at) telmomenezes.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the version 2 of the GNU General Public License 
@@ -31,6 +31,7 @@ class NMLParser(HTMLParser):
         self.output = ""
         self.vars = []
         self.file_list = []
+        self.dir_path = ""
         HTMLParser.reset(self)
     def handle_starttag(self, tag, attrs):
         attrs_string = "".join([' %s="%s"' % (key, value) for key, value in attrs])
@@ -42,7 +43,7 @@ class NMLParser(HTMLParser):
                     file_name = value
             if file_name not in self.file_list:
                 try:
-                    file = open(file_name)
+                    file = open(os.path.join(self.dir_path, file_name))
                     parser = NMLParser()
                     parser.vars = attrs
                     parser.file_list = self.file_list
@@ -80,22 +81,23 @@ class NMLParser(HTMLParser):
         if htmlentitydefs.entitydefs.has_key(ref):
             self.output += ";"
     def handle_comment(self, text):
-        self.output += "<!" + text + ">"
+        self.output += "<!--" + text + "-->"
     def handle_decl(self, text): 
         self.output += "<!" + text + ">"
     def handle_pi(self, text):
         self.output += "<?" + text + ">"
 
-def process_file(file_name):
+def process_file(file_name, dir_path):
     if file_name[-4:] != ".nml":
         return 0
 
-    file = open(file_name, "rb")
+    file = open(os.path.join(dir_path, file_name), "rb")
     parser = NMLParser()
+    parser.dir_path = dir_path
     parser.feed(file.read())
     file.close()
     out_file_name = file_name[0:-4] + ".html"
-    file = open(out_file_name, "w")
+    file = open(os.path.join(dir_path, out_file_name), "w")
     file.write(parser.output)
     file.close()
     print file_name + " processed, " + out_file_name + " generated."
@@ -122,12 +124,13 @@ files_processed = 0
 
 for arg in args:
     file_list = glob.glob(arg)
-    for file_name in file_list:
-        files_processed += process_file(file_name)
+    for file_path in file_list:
+        dir_path, file_name = os.path.split(arg)
+        files_processed += process_file(file_name, dir_path)
         if recurse:
             for root, dirs, files in os.walk(file_name):
                 for name in files:
-                     files_processed += process_file(os.path.join(root, name))
+                     files_processed += process_file(name, root)
 
 print "" + str(files_processed) + " file(s) processed, " + str(warnings) + " warning(s)."
 print "done!"
