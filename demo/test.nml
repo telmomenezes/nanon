@@ -1,0 +1,7 @@
+<nanon file="header.nmlx" title="This is a test" />
+
+<h1>Hello World.</h1>
+<p>
+    Testing...
+
+<nanon file="footers.nmlx" />
