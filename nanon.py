@@ -24,6 +24,8 @@ import htmlentitydefs
 from getopt import *
 import os
 
+version = "0.1"
+
 warnings = 0
 
 class NMLParser(HTMLParser):
@@ -106,10 +108,17 @@ def process_file(file_name, dir_path):
 def help():
     print "usage: " + sys.argv[0] + " [-h -r] source_file ..." 
 
+def show_version():
+    print "nanon " + version + " by Telmo Menezes"
+
 try:
-    opts, args = getopt(sys.argv[1:], ":hr")
+    opts, args = getopt(sys.argv[1:], ":hrv")
 except GetoptError:
     help()
+    exit()
+
+if ('-v', '') in opts:
+    show_version()
     exit()
 
 if len(args) == 0:
