@@ -17,10 +17,10 @@
     <div id="leftbar">
         <a href="index.html">Welcome</a>
         <a href="index.html">Download</a>
-        <a href="index.html">Install</a>
-        <a href="index.html">How to use</a>
-        <a href="index.html">Author</a>
-        <a href="index.html">Licence</a>
+        <a href="install.html">Install</a>
+        <a href="howto.html">How to use</a>
+        <a href="http://telmomenezes.com">Author</a>
+        <a href="license.html">License</a>
 	</div>
 
     <div id="centerbar">
