@@ -79,7 +79,6 @@ body {
 
 #leftbar h1 {
 	font-size:12px;
-	padding-top:10px;
 }
 
 #centerbar {
@@ -92,7 +91,13 @@ body {
 
 #centerbar h1 {
 	font-size:25px;
-	padding-top:10px;
+	font-weight:normal;
+    padding:0px 0px 25px 0px;
+    margin:0px;
+}
+
+#centerbar h2 {
+	font-size:18;
 	font-weight:normal;
 }
 
