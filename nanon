@@ -19,7 +19,7 @@
 
 import sys
 import glob
-from HTMLParser import HTMLParser 
+from HTMLParser import HTMLParser
 import htmlentitydefs
 from getopt import *
 import os
@@ -37,6 +37,7 @@ class NMLParser(HTMLParser):
         HTMLParser.reset(self)
     def handle_starttag(self, tag, attrs):
         attrs_string = "".join([' %s="%s"' % (key, value) for key, value in attrs])
+        attrs_string = attrs_string.replace("&", "&amp;") # XXX: ugly hack...
 
         file_name = ""
         if tag == "nanon":
@@ -74,17 +75,25 @@ class NMLParser(HTMLParser):
             pass
         else:
             self.output += "</" + tag + ">"
+    def handle_startendtag(self, tag, attrs):
+        attrs_string = "".join([' %s="%s"' % (key, value) for key, value in attrs])
+        if tag == "nanon":
+            pass
+        elif tag == "nanonv":
+            pass
+        else:
+            self.output += "<" + tag + attrs_string + "/>"
     def handle_data(self, text):
         self.output += text
     def handle_charref(self, ref):
-        self.output += "&#" + ref
+        self.output += "&#" + ref + ";"
     def handle_entityref(self, ref):
         self.output += "&" + ref
         if htmlentitydefs.entitydefs.has_key(ref):
             self.output += ";"
     def handle_comment(self, text):
         self.output += "<!--" + text + "-->"
-    def handle_decl(self, text): 
+    def handle_decl(self, text):
         self.output += "<!" + text + ">"
     def handle_pi(self, text):
         self.output += "<?" + text + ">"
