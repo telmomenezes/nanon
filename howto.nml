@@ -1,0 +1,175 @@
+<nanon file="header.nmlx" title="Welcome" />
+
+<h1>How to use</h1>
+
+The concept of <strong>nanon</strong> is very simple: define a tag that allows you to place the content of a file anywhere in your HTML code. The tag is <code>&lt;nanon&gt;</code> and it accepts the <code>file</code> parameter, where you specify the relative path to the file that you want to include. This way you can keep reusable code in separate files. A typical example is a navigation menu. All pages of the site are to display this menu. If they include it by the nanon tag, you only have to change the menu file and the nanon command will update the entire site.
+
+<h2>A simple example</h2>
+Suppose you have the following HTML page:
+
+<pre><code>
+<strong>page.html:</strong>
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Hello World&lt;/title&gt;
+        &lt;link rel="stylesheet" href="style.css" type="text/css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="header"&gt;
+            &lt;h1&gt;My Site&lt;/h1&gt;
+            &lt;h2&gt;My Logo&lt;/h2&gt;
+        &lt;/div&gt;
+        &lt;div id="menubar"&gt;
+            &lt;a href="option1.html"&gt;Option 1&lt;/a&gt;
+            &lt;a href="option2.html"&gt;Option 2&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div id="mainbar"&gt;
+            Hello World...
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>
+This is a common situation: a header, a menu and some content. Suppose that you want to add pages to this site and you want to reuse the look and feel, the header and the menu. The menu will keep growing and you want to be able to change it in one place and propagate these changes to the entire site. Maybe at some point you want to change the look and feel. To do this with <strong>nanon</strong>, you would divide this page in 4 files: <code>header.nmlx</code>, <code>footer.nmlx</code>, <code>menu.nmlx</code> and <code>page.nml</code>. We use the extension ".nml" for files that are to be processed by <strong>nanon</strong> to generate ".html" files. NML stands for "Nanon Markup Language" which is equivalent to HTML but adds two extra tags. We already know about the <code>&lt;nanon&gt;</code> tag and will talk about the second one in a moment. Files with the extension ".nmlx" are to be included in ".nml" files but do not directly generate ".html" files.
+<p>
+So here's what you do:
+<pre><code>
+<strong>menu.nmlx:</strong>
+
+&lt;div id="menubar"&gt;
+    &lt;a href="option1.html"&gt;Option 1&lt;/a&gt;
+    &lt;a href="option2.html"&gt;Option 2&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+This file contains the menu bar.
+
+<pre><code>
+<strong>header.nmlx:</strong>
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Hello World&lt;/title&gt;
+        &lt;link rel="stylesheet" href="style.css" type="text/css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="header"&gt;
+            &lt;h1&gt;My Site&lt;/h1&gt;
+            &lt;h2&gt;My Logo&lt;/h2&gt;
+        &lt;/div&gt;
+        &lt;nanon file="menu.nmlx"&gt;&lt;/nanon&gt;
+        &lt;div id="mainbar"&gt;
+</code></pre>
+
+This file contains the header for HTML pages. It takes care of the usual HTML header definitions like page title and CSS file to use. Notice that it then uses the <code>&lt;nanon&gt;</code> tag to include <code>menu.nmlx</code>.
+
+<pre><code>
+<strong>footer.nmlx:</strong>
+
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+This file contains the footer for HTML pages and closes all the tags that <code>header.nmlx</code> left open. The header and footer files define the page template. As with the menu, these files can be changed later without affecting the content. Just use the <strong>nanon</strong> command to regenerate the site's pages.
+
+<pre><code>
+<strong>page.nml:</strong>
+
+&lt;nanon file="header.nmlx"&gt;&lt;/nanon&gt;
+
+Hello World...
+
+&lt;nanon file="footer.nmlx"&gt;&lt;/nanon&gt;
+</code></pre>
+
+This file defines the page itself. It begins by including the header and ends by including the footer.
+<p>
+All this work starts to pay off when you want to create more pages, because then you will only have to do something like this:
+
+<pre><code>
+<strong>page2.nml:</strong>
+
+&lt;nanon file="header.nmlx"&gt;&lt;/nanon&gt;
+
+This is another page with more stuff.
+
+&lt;nanon file="footer.nmlx"&gt;&lt;/nanon&gt;
+</code></pre>
+
+<h2>Running nanon</h2>
+
+<strong>nanon</strong> is a command line tool. It processes all <code>.nml</code> files in the file mask you specify. For example:
+
+<pre><code>
+$ nanon *
+</code></pre>
+
+Processes all <code>.nml</code> files in the current directory.
+
+<pre><code>
+$ nanon site/*
+</code></pre>
+
+Processes all <code>.nml</code> files in the <code>site</code> directory.
+
+<pre><code>
+$ nanon site/page.nml
+</code></pre>
+
+Processes the <code>site/page.nml</code> file.
+
+<pre><code>
+$ nanon -r *
+</code></pre>
+
+The <code>-r</code> option makes <strong>nanon</strong> recurse into directories. In this case, <code>.nml</code> files contained in subdirectories of the current directory will also be processed. This is useful when you want to organize your site in a directory hierarchy.
+<p>
+<strong>nanon</strong> generates a <code>.html</code> file for every <code>.nml</code> file and use the same name so, for example, <code>index.html</code> will be generated for <code>index.nml</code>. All changes to your site must be made in <code>.nml</code> and <code>.nmlx</code> files.
+
+<h2>Variables</h2>
+
+In the previous sections we described basic <strong>nanon</strong> use. We will now explain how to use a more advanced feature: variables.
+<p>
+Variables have many uses but let's start with an example. Suppose you want each page in your site to have its own title, but you are reusing an header and that's were the title is specified. You can do this by passing a variable to the header. Let's apply this to our example site:
+
+<pre><code>
+<strong>page.nml:</strong>
+
+&lt;nanon file="header.nmlx" <strong>title="Hello"</strong>&gt;&lt;/nanon&gt;
+
+Hello World...
+
+&lt;nanon file="footer.nmlx"&gt;&lt;/nanon&gt;
+</code></pre>
+
+We are now passing the title variable to <code>header.nmlx</code>. It's now time to introduce the second <strong>nanon</strong> tag: <code>&lt;nanonv&gt;</code>. This tag allows you to place the value of some variable that was passed anywhere in HTML code. We will use it in <code>header.html</code> like this:
+
+<pre><code>
+<strong>header.nmlx:</strong>
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;<strong>&lt;nanonv var="title"&gt;&lt;/nanonv&gt;</strong>&lt;/title&gt;
+        &lt;link rel="stylesheet" href="style.css" type="text/css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="header"&gt;
+            &lt;h1&gt;My Site&lt;/h1&gt;
+            &lt;h2&gt;My Logo&lt;/h2&gt;
+        &lt;/div&gt;
+        &lt;nanon file="menu.nmlx"&gt;&lt;/nanon&gt;
+        &lt;div id="mainbar"&gt;
+</code></pre>
+
+What happens is that <code>&lt;nanonv var="title"&gt;&lt;/nanonv&gt;</code> will be replaced with the value of variable title, in this case "Hello".
+<p>
+Any parameter that you give to <code>&lt;nanon&gt;</code> tags besides "file" will be considered a variable and passed to the imported file.
+
+<h2>To finalize</h2>
+
+We just described all the functionalities of <strong>nanon</strong>. It is a very simple tool and we intend to keep it that way, because we believe its power lies in its simplicity.
+<p>
+This site is generated with <strong>nanon</strong> and is available in the distribution file as a demo.
+<nanon file="footer.nmlx" />

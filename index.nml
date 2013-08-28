@@ -1,0 +1,22 @@
+<nanon file="header.nmlx" title="Welcome" />
+
+<h1>Welcome</h1>
+
+Sometimes you just need to create a simple, static site. Maybe it's for a small company or an open source project like this one. Or maybe you don't have time to maintain a blog and just want a personal homepage. In cases like these, why not avoid the complexities of content management systems and rely on good old HTML + CSS?
+<p>
+With modern CSS you can separate content from presentation. HTML becomes a joy to edit and maintain. Pure HTML/CSS sites are easy to backup, require nothing special of the server and you can't get any faster than that in terms of page rendering time! ;)
+<p>
+The only problem left is templates and code reuse. Usually you will want your pages to have similar looks and structure (aka template). Also you will want to reuse elements across pages like menus and ad blocks. This is were <strong>nanon</strong> can help you. Take a look <a href="howto.html">here</a> to learn how to use it.
+<p>
+Hope you enjoy!
+
+<br /><br />
+<h1>News</h1>
+
+<strong>nanon 0.1 alpha release</strong><br />
+13-Jan-2008<br /><br />
+The first version of nanon was released. It is considered alpha because it was not sufficiently tested, although it already implements all of the intended functionalities. 
+ <br />
+If no major flaws are discovered, a beta version will be released soon. 
+
+<nanon file="footer.nmlx" />
